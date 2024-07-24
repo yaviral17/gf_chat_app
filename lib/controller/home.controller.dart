@@ -6,7 +6,9 @@ import 'package:gf_chat_app/models/message.model.dart';
 import 'package:gf_chat_app/models/room.model.dart';
 
 class HomeController extends GetxController {
-  RxList<Room> rooms = <Room>[].obs;
+  RxList<Room> rooms = <Room>[
+    Room(roomId: "abcd", messages: []),
+  ].obs;
 
   @override
   void onInit() {

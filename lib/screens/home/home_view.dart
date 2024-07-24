@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                   TextButton(
                     onPressed: () {
                       final roomId = textController.text;
-                      final room = Room(roomId: roomId);
+                      final room = Room(roomId: roomId, messages: []);
                       controller.addRoom(room);
                       Navigator.pop(context);
                     },

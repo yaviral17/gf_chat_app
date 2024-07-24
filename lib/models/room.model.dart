@@ -7,7 +7,7 @@ class Room {
 
   Room({
     required this.roomId,
-    this.messages = const [],
+    required this.messages,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) {

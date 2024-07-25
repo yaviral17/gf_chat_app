@@ -1,8 +1,13 @@
-import 'package:get_storage/get_storage.dart';
 import 'package:gf_chat_app/models/message.model.dart';
+import 'package:hive/hive.dart';
 
+part 'room.model.g.dart';
+
+@HiveType(typeId: 0)
 class Room {
+  @HiveField(0)
   String roomId;
+  @HiveField(1)
   List<Message> messages;
 
   Room({

@@ -9,7 +9,7 @@ class WebSocketService {
 
   WebSocketService(this.roomId) {
     channel = WebSocketChannel.connect(
-      Uri.parse('ws://192.168.31.102:8000/api/chat/$roomId'),
+      Uri.parse('wss://gf-chat-production.up.railway.app/api/chat/$roomId'),
     );
   }
 

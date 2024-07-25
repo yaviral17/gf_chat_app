@@ -3,7 +3,6 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:gf_chat_app/controller/home.controller.dart';
 import 'package:gf_chat_app/models/room.model.dart';
-import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,12 +30,13 @@ class _HomePageState extends State<HomePage> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final room = controller.rooms[index];
                   return ListTile(
-                    title: Text(room.roomId),
-                    subtitle: Text(room.messages.length.toString()),
+                    title: Text(controller.rooms[index].roomId),
+                    subtitle: Text(
+                        controller.rooms[index].messages.length.toString()),
                     onTap: () {
-                      Navigator.pushNamed(context, '/chat', arguments: room);
+                      Navigator.pushNamed(context, '/chat',
+                          arguments: controller.rooms[index]);
                     },
                   );
                 },
@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                       final roomId = textController.text;
                       final room = Room(roomId: roomId, messages: []);
                       controller.addRoom(room);
+                      controller.persistRooms();
                       Navigator.pop(context);
                     },
                     child: const Text('Add'),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,7 +46,7 @@ class _ChatPageState extends State<ChatPage> {
               if (controller.rooms[i].roomId == room.roomId) {
                 controller.rooms[i].messages.add(
                   Message(
-                    id: Uuid().v4(),
+                    id: const Uuid().v4(),
                     message: messageData['message']!,
                     sender: messageData['username']!,
                     receiver: 'username',
@@ -55,6 +54,7 @@ class _ChatPageState extends State<ChatPage> {
                     roomId: room.roomId,
                   ),
                 );
+                controller.persistRooms();
                 setState(() {});
               }
             }
@@ -80,6 +80,7 @@ class _ChatPageState extends State<ChatPage> {
     if (smsController.text.isNotEmpty) {
       _webSocketService.sendMessage(message);
       smsController.clear();
+      controller.persistRooms();
       setState(() {});
     }
   }
@@ -121,7 +122,7 @@ class _ChatPageState extends State<ChatPage> {
                     onPressed: () {
                       if (smsController.text.isNotEmpty) {
                         final message = Message(
-                          id: Uuid().v4(),
+                          id: const Uuid().v4(),
                           message: smsController.text,
                           sender: 'Me',
                           receiver: 'username',

@@ -1,11 +1,20 @@
-import 'package:get_storage/get_storage.dart';
+import 'package:hive/hive.dart';
 
+part 'message.model.g.dart';
+
+@HiveType(typeId: 1)
 class Message {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String message;
+  @HiveField(2)
   String sender;
+  @HiveField(3)
   String receiver;
+  @HiveField(4)
   String timestamp;
+  @HiveField(5)
   String roomId;
 
   Message({

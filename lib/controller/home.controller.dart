@@ -1,9 +1,8 @@
-import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:gf_chat_app/models/message.model.dart';
 import 'package:gf_chat_app/models/room.model.dart';
+import 'package:hive/hive.dart';
 
 class HomeController extends GetxController {
   RxList<Room> rooms = <Room>[
@@ -19,7 +18,6 @@ class HomeController extends GetxController {
 
   void addRoom(Room room) {
     rooms.add(room);
-    persistRooms();
   }
 
   void removeRoom(Room room) {
@@ -37,20 +35,17 @@ class HomeController extends GetxController {
   }
 
   void persistRooms() {
-    Map<String, dynamic> roomsJson = {};
-    rooms.forEach((room) {
-      roomsJson[room.roomId] = room.toJson();
-    });
-    GetStorage().write('rooms', roomsJson);
+    // store in Room list into hive
+
+    Hive.box('rooms').clear();
+    Hive.box('rooms').addAll(rooms);
   }
 
   void loadRooms() {
-    final roomsJson = GetStorage().read('rooms');
-    if (roomsJson != null) {
-      rooms.clear();
-      roomsJson.forEach((key, value) {
-        rooms.add(Room.fromJson(value));
-      });
+    // load rooms from hive
+    final box = Hive.box('rooms');
+    if (box.isNotEmpty) {
+      rooms = box.values.toList().cast<Room>().obs;
     }
   }
 }

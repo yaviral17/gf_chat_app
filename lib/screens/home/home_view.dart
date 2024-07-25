@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:gf_chat_app/controller/home.controller.dart';
 import 'package:gf_chat_app/models/room.model.dart';
+import 'package:gf_chat_app/util/helper_functions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,13 +18,24 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GF Chat App'),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        title: const Center(
+          child: Text(
+            'Home',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
+      backgroundColor: Theme.of(context).canvasColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Home Page'),
             Obx(
               () => ListView.builder(
                 itemCount: controller.rooms.length,

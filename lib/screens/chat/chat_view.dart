@@ -49,7 +49,7 @@ class _ChatPageState extends State<ChatPage> {
                     id: const Uuid().v4(),
                     message: messageData['message']!,
                     sender: messageData['username']!,
-                    receiver: 'username',
+                    receiver: '-',
                     timestamp: DateTime.now().toIso8601String(),
                     roomId: room.roomId,
                   ),
@@ -89,8 +89,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: Text('Room Id ${room.roomId}'),
       ),
+      backgroundColor: Theme.of(context).canvasColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -99,9 +101,42 @@ class _ChatPageState extends State<ChatPage> {
               child: ListView.builder(
                 itemCount: room.messages.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(room.messages[index].sender),
-                    subtitle: Text(room.messages[index].message),
+                  // return ListTile(
+                  //   title: Text(room.messages[index].sender),
+                  //   subtitle: Text(room.messages[index].message),
+                  // );
+                  bool isMe =
+                      room.messages[index].sender == controller.username;
+                  return Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment:
+                        isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        // height: 54,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4),
+                        padding: const EdgeInsets.all(8.0),
+
+                        decoration: BoxDecoration(
+                          color: isMe
+                              ? Theme.of(context).colorScheme.primaryContainer
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer
+                                  .withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          room.messages[index].message,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
@@ -124,8 +159,8 @@ class _ChatPageState extends State<ChatPage> {
                         final message = Message(
                           id: const Uuid().v4(),
                           message: smsController.text,
-                          sender: 'Me',
-                          receiver: 'username',
+                          sender: controller.username,
+                          receiver: '-',
                           timestamp: DateTime.now().toIso8601String(),
                           roomId: room.roomId,
                         );

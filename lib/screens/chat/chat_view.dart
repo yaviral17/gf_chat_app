@@ -6,6 +6,7 @@ import 'package:gf_chat_app/Servces/wbsocker.servce.dart';
 import 'package:gf_chat_app/controller/home.controller.dart';
 import 'package:gf_chat_app/models/message.model.dart';
 import 'package:gf_chat_app/models/room.model.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
@@ -112,30 +113,81 @@ class _ChatPageState extends State<ChatPage> {
                     mainAxisAlignment:
                         isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                     children: [
-                      Container(
-                        // height: 54,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4),
-                        padding: const EdgeInsets.all(8.0),
-
-                        decoration: BoxDecoration(
-                          color: isMe
-                              ? Theme.of(context).colorScheme.primaryContainer
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer
-                                  .withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          room.messages[index].message,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
+                      if (!isMe)
+                        CircleAvatar(
+                          child: Text(
+                            room.messages[index].sender
+                                .split(" ")[1][0]
+                                .toUpperCase(),
                           ),
                         ),
+                      Column(
+                        crossAxisAlignment: isMe
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              room.messages[index].sender,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            // height: 54,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4),
+                            padding: const EdgeInsets.all(8.0),
+
+                            decoration: BoxDecoration(
+                              color: isMe
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .tertiaryContainer
+                                      .withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              room.messages[index].message,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              DateFormat("dd/MM/yyyy hh:mm a").format(
+                                DateTime.parse(room.messages[index].timestamp),
+                              ),
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                      if (isMe)
+                        CircleAvatar(
+                          child: Text(
+                            room.messages[index].sender
+                                .split(" ")[1][0]
+                                .toUpperCase(),
+                          ),
+                        ),
                     ],
                   );
                 },
